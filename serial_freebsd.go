@@ -83,3 +83,11 @@ func (port *unixPort) setSpecialBaudrate(speed uint32) error {
 	// TODO: unimplemented
 	return &PortError{code: InvalidSpeed}
 }
+
+func (port *unixPort) ResetInputBuffer() error {
+	return unix.IoctlSetPointerInt(port.handle, ioctlTcflsh, unix.TCIFLUSH)
+}
+
+func (port *unixPort) ResetOutputBuffer() error {
+	return unix.IoctlSetPointerInt(port.handle, ioctlTcflsh, unix.TCOFLUSH)
+}

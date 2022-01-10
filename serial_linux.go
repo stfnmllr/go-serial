@@ -83,3 +83,11 @@ func setTermSettingsBaudrate(speed int, settings *unix.Termios) (error, bool) {
 	settings.Ospeed = toTermiosSpeedType(baudrate)
 	return nil, false
 }
+
+func (port *unixPort) ResetInputBuffer() error {
+	return unix.IoctlSetInt(port.handle, ioctlTcflsh, unix.TCIFLUSH)
+}
+
+func (port *unixPort) ResetOutputBuffer() error {
+	return unix.IoctlSetInt(port.handle, ioctlTcflsh, unix.TCOFLUSH)
+}
